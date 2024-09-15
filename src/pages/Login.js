@@ -1,13 +1,38 @@
-// src/pages/Login.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';  // useNavigate 훅 가져오기
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loginSuccess, setLoginSuccess] = useState(null); // 로그인 성공 여부 상태
+  const navigate = useNavigate();  // useNavigate 훅 초기화
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('로그인 정보:', { email, password });
+
+    try {
+      const response = await fetch('http://localhost:8080/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+      const result = await response.json();
+      console.log(result)
+
+      setLoginSuccess(result); // 서버 응답에 따라 상태 업데이트
+
+      if (result === true) {  // 로그인 성공 시 메인 페이지로 이동
+        navigate('/main');  // '/main' 경로로 이동
+      }
+    } catch (error) {
+      console.error('로그인 요청 중 에러 발생:', error);
+      setLoginSuccess(false); // 오류가 발생한 경우 로그인 실패 처리
+    }
   };
 
   return (
@@ -48,6 +73,12 @@ const Login = () => {
             Create New Account
           </button>
         </form>
+
+        {loginSuccess !== null && (
+          <p className="mt-4 text-center">
+            {loginSuccess ? 'Login successful!' : 'Invalid email or password.'}
+          </p>
+        )}
       </div>
     </div>
   );
