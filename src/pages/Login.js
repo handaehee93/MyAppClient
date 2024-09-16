@@ -35,6 +35,11 @@ const Login = () => {
     }
   };
 
+  // 회원가입 버튼을 눌렀을 때 회원가입 페이지로 이동
+  const goToSignUp = () => {
+    navigate('/signup');
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="flex flex-col items-start mr-10">
@@ -63,14 +68,14 @@ const Login = () => {
             className="p-3 border border-gray-300 rounded-lg"
           />
           <button type="submit" className="p-3 bg-blue-600 text-white rounded-lg font-bold">
-            Log In
+            로그인
           </button>
           <a href="/" className="text-blue-600 text-center mt-2">
-            Forgotten password?
+            비밀번호 찾기
           </a>
           <div className="border-t border-gray-300 my-4"></div>
-          <button className="p-3 bg-green-500 text-white rounded-lg font-bold">
-            Create New Account
+          <button type="button" onClick={goToSignUp} className="p-3 bg-green-500 text-white rounded-lg font-bold">
+            회원 가입
           </button>
         </form>
 
